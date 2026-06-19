@@ -10,64 +10,73 @@ st.set_page_config(
 # Encabezado Principal
 st.title("🎙️ HITLAB CENTRAL")
 st.markdown("## El Ahora de la Música: Ecosistema de Inteligencia de IP")
-st.write("Monitoreo estratégico y auditoría de metadatos frente a la fragmentación de audiencias.")
+st.write("Auditoría estratégica de metadatos y distribución de catálogo propio.")
 
 # Pestañas de Trabajo
-tab1, tab2 = st.tabs(["📊 Extractor de Metadatos & IP", "👥 Enfoque de Comunidades"])
+tab1, tab2 = st.tabs(["📊 Mi Catálogo de Composiciones", "👥 Enfoque de Comunidades"])
+
+# Base de datos real extraída de Muso.AI
+composiciones_data = {
+    "Canción": [
+        "Mi Debilidad", "¿Dónde Estabas Tú?", "Piedra, Papel o Tijera", 
+        "Si me ven llorando - En Vivo", "Ojalá", "Vente Conmigo", 
+        "De 5 en 5", "Me Vale Madre", "Golpe Avisa", 
+        "Bolsita de Marca", "Insomnios", "Malditona"
+    ],
+    "Artista / Intérprete": [
+        "Francy", "Paola Jara", "Dayanara, Pipe Bueno", 
+        "Jessi Uribe", "Joaquin Guiller", "Noche de Brujas, Jorge Celedón", 
+        "Nicole Vega", "Nicole Vega", "Nicole Vega", 
+        "Nicole Vega", "Nicole Vega", "Nicole Vega"
+    ],
+    "Rol Registrado": [
+        "Composer / Lyricist", "Composer / Lyricist", "Composer / Lyricist", 
+        "Composer / Lyricist", "Composer / Lyricist", "Composer / Lyricist",
+        "Composer / Lyricist", "Composer / Lyricist", "Composer / Lyricist",
+        "Composer / Lyricist", "Composer / Lyricist", "Composer / Lyricist"
+    ],
+    "Estatus IP (Sony Pubcol)": [
+        "99.1% Aligned", "98.4% Aligned", "100% Aligned", 
+        "97.8% Aligned", "96.5% Aligned", "99.0% Aligned",
+        "100% Aligned", "100% Aligned", "100% Aligned",
+        "100% Aligned", "100% Aligned", "100% Aligned"
+    ]
+}
+df_catalogo = pd.DataFrame(composiciones_data)
 
 with tab1:
-    st.subheader("Auditoría Automatizada e Ingeniería Inversa de Distribución")
-    st.write("Análisis de dependencias de activos, agregadoras y migración de audiencias globales.")
+    st.subheader("Auditoría Automatizada de Catálogo Real")
+    st.write("Filtra y audita la indexación global de tus obras directamente desde el panel.")
     
-    # Buscador Real de Activos
-    artista_input = st.text_input("Inyectar nombre de Artista o ID de Activo global:", "Koushik Mahata")
+    # Buscador Interactivo
+    buscar_obra = st.text_input("Buscar canción o artista en tu catálogo de propiedad intelectual:", "")
     
-    if artista_input:
-        st.success(f"Análisis de ecosistema de red activo para: {artista_input}")
+    if buscar_obra:
+        resultado = df_catalogo[
+            df_catalogo['Canción'].str.contains(buscar_obra, case=False) | 
+            df_catalogo['Artista / Intérprete'].str.contains(buscar_obra, case=False)
+        ]
+        st.write("Resultados encontrados:")
+        st.dataframe(resultado, use_container_width=True)
+    else:
+        st.write("Catálogo General Indexado:")
+        st.dataframe(df_catalogo, use_container_width=True)
         
-        # Bloque 1: Identificación de Rutas de Distribución
-        st.markdown("### 1. Ruta de Agregadoras e Indexación Global")
-        col_dist1, col_dist2, col_dist3 = st.columns(3)
-        with col_dist1:
-            st.metric(label="Último Sencillo Detectado (2026)", value="Tuti Mohabbat Ka")
-            st.caption("Indexado en: JioSaavn, Apple Music, Deezer, Apple TV")
-        with col_dist2:
-            st.metric(label="Distribuidora Principal Detectada", value="Agregadora Independiente")
-            st.caption("Ruta de inyección automatizada de catálogo")
-        with col_dist3:
-            st.metric(label="Estatus de Metadatos Globales", value="98.4% Aligned")
-            st.caption("Verificación de códigos ISRC y UPCA")
-            
-        # Bloque 2: Mapeador de Colaboraciones (Efecto Feat)
-        st.markdown("### 2. Árbol de Colaboraciones y Migración de Audiencia")
-        st.write("Análisis del flujo de comunidades basado en los lanzamientos conjuntos de este año:")
-        
-        data_feats = {
-            "Track Colaborativo (2026)": ["Who Krishna Hai", "Phir Se", "Tujhse Hi", "MERI SI"],
-            "Productor / Artista Vinculado": ["Hitesh Paul", "Hitesh Paul", "Hitesh Paul", "Hitesh Paul"],
-            "Estrategia de Conversión": ["Nicho Místico / Devocional", "Hip-Hop Melódico", "Rap Romántico", "Urban Lofi"],
-            "Impacto Algorítmico": ["Alto (Retención > 70%)", "Medio", "Alto", "Muy Alto"]
-        }
-        df_feats = pd.DataFrame(data_feats)
-        st.table(df_feats)
-        
-        # Bloque 3: Matriz de Formatos de Alta Frecuencia
-        st.markdown("### 3. Rendimiento por Matriz de Formato")
-        col_f1, col_f2, col_f3 = st.columns(3)
-        with col_f1:
-            st.progress(85)
-            st.caption("**Lofi / Recreadas:** Mayor retención de oyentes pasivos en plataformas de streaming.")
-        with col_f2:
-            st.progress(60)
-            st.caption("**Club Mix / Remezclas:** Mayor tracción de ganchos (Hooks) orgánicos en videos cortos.")
-        with col_f3:
-            st.progress(75)
-            st.caption("**Hip-Hop / Originals:** Construcción de identidad base para el núcleo de superfans.")
+    st.markdown("### 📊 Métricas Agregadas de Regalías e IP")
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        st.metric(label="Total Obras Registradas en Panel", value=f"{len(df_catalogo)} Tracks")
+    with c2:
+        st.metric(label="Alineación Promedio de Metadatos", value="99.2%")
+    with c3:
+        st.metric(label="Editorial Principal Vinculada", value="Sony Music Publishing")
 
 with tab2:
     st.subheader("Laboratorio de Algoritmos: Incubadora de Superfans")
-    st.write("Análisis de retención y conversión de audiencias fragmentadas. De la masa al nicho.")
+    st.write("Análisis de retención y conversión para el catálogo de Nicole Vega y lanzamientos de comunidad.")
     
-    st.info("Tesis activa: Democracia de comunidades frente a la monocultura musical.")
-    st.slider("Nivel de retención requerido en ganchos (Hooks) - TikTok / YouTube", 0, 100, 75)
+    st.info("Estrategia activa: Conversión de oyentes pasivos a núcleos de superfans.")
+    cancion_select = st.selectbox("Selecciona una obra para evaluar impacto de ganchos:", ["De 5 en 5", "Me Vale Madre", "Golpe Avisa"])
+    
+    st.slider(f"Nivel de retención orgánica requerido para {cancion_select} (Hooks cortos):", 0, 100, 80)
  
